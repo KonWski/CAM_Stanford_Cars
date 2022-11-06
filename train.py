@@ -69,10 +69,6 @@ def train_model(
             for id, batch in enumerate(loader, 0):
 
                 with torch.set_grad_enabled(state == 'train'):
-
-                    progress_loss =  round(running_loss / (id + 1), 2)
-                    progress_acc = round(running_corrects / (id + 1), 2)
-                    logging.info(f"Loss: {progress_loss}, Accuracy: {progress_acc}")
                     
                     images, labels = batch
 
