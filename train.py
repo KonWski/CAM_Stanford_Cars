@@ -78,10 +78,13 @@ def train_model(
 
                     # calculate loss
                     outputs = model(images).to(device)
+                    print(f"outputs.shape: {outputs.shape}")
                     loss = criterion(outputs, labels)
 
                     proba = softmax(outputs)
+                    print(f"proba.shape: {proba.shape}")
                     preds = torch.round(proba)
+                    print(f"preds.shape: {preds.shape}")
 
                     if state == "train":
                         loss.backward()
