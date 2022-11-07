@@ -5,6 +5,7 @@ from torch import nn
 from torch.nn.functional import softmax
 from torchvision import datasets, models
 from transforms import transform_predict
+from model import AlexnetCam
 
 def train_model(
         device, 
@@ -34,7 +35,7 @@ def train_model(
         or where dataset is already stored
     '''
 
-    model = models.alexnet(pretrained=True)
+    model = AlexnetCam()
     model = model.to(device)
     optimizer = Adam(model.parameters(), lr=1e-5)
 
@@ -71,7 +72,7 @@ def train_model(
                 with torch.set_grad_enabled(state == 'train'):
                     
                     images, labels = batch
-                    print(f"len labels: {len(labels)}")
+                    print(f"labels.shape: {len(labels.shape)}")
                     images = images.to(device)
                     labels = labels.to(device)
                     optimizer.zero_grad()
