@@ -73,6 +73,7 @@ def train_model(
                     
                     images, labels = batch
                     print(f"labels.shape: {labels.shape}")
+                    print(labels)
                     images = images.to(device)
                     labels = labels.to(device)
                     optimizer.zero_grad()
