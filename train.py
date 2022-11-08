@@ -72,8 +72,8 @@ def train_model(
                 with torch.set_grad_enabled(state == 'train'):
                     
                     images, labels = batch
-                    print(f"labels.shape: {labels.shape}")
-                    print(labels)
+                    # print(f"labels.shape: {labels.shape}")
+                    # print(labels)
                     images = images.to(device)
                     labels = labels.to(device)
                     optimizer.zero_grad()
@@ -86,7 +86,7 @@ def train_model(
                     proba = softmax(outputs)
                     # print(f"proba.shape: {proba.shape}")
                     preds = torch.round(proba)
-                    print(f"preds.shape: {preds.shape}")
+                    # print(f"preds.shape: {preds.shape}")
 
                     if state == "train":
                         loss.backward()
@@ -96,7 +96,7 @@ def train_model(
                 running_loss += loss.item()
                 # print(f"torch.argmax(preds): {torch.argmax(preds)}")
                 # print(f"torch.argmax(labels): {torch.argmax(labels)}")
-                running_corrects += (torch.argmax(preds, dim=1) == torch.argmax(labels, dim=1)).sum().item()
+                running_corrects += (torch.argmax(preds, dim=1) == labels).sum().item()
 
             # save and print epoch statistics
             epoch_loss = round(running_loss / len_dataset, 2)
