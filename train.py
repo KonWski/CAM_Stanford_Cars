@@ -95,7 +95,7 @@ def train_model(
                 running_loss += loss.item()
                 # print(f"torch.argmax(preds): {torch.argmax(preds)}")
                 # print(f"torch.argmax(labels): {torch.argmax(labels)}")
-                running_corrects += (torch.argmax(preds, 1) == torch.argmax(labels, 1)).sum().item()
+                running_corrects += (torch.argmax(preds, dim=1) == torch.argmax(labels, dim=1)).sum().item()
 
             # save and print epoch statistics
             epoch_loss = round(running_loss / len_dataset, 2)
