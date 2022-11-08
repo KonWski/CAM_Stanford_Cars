@@ -72,7 +72,7 @@ def train_model(
                 with torch.set_grad_enabled(state == 'train'):
                     
                     images, labels = batch
-                    # print(f"labels.shape: {len(labels.shape)}")
+                    print(f"labels.shape: {labels.shape}")
                     images = images.to(device)
                     labels = labels.to(device)
                     optimizer.zero_grad()
