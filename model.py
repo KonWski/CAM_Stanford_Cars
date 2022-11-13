@@ -16,15 +16,17 @@ class AlexnetCam(nn.Module):
         global average pooling: (256, 7, 7) -> (256, 1, 1)
     classifier: nn.Linear
         last, fully connected layer
+    n_classes: int
+        number of classes - number of output neurons
     '''
 
-    def __init__(self):
+    def __init__(self, n_classes: int):
 
         super().__init__()
 
         self.features = nn.Sequential(*list(alexnet(pretrained=True).children())[:-2])
         self.gap = nn.AvgPool2d(7)
-        self.classifier = nn.Linear(256, 196)
+        self.classifier = nn.Linear(256, n_classes)
 
     def forward(self, x: Tensor, get_cam: bool = False):
         '''

@@ -5,6 +5,7 @@ from torch import nn
 from torch.nn.functional import softmax
 from torchvision import datasets, models
 from transforms import transform_predict
+from dataset import StanfordCarsCAM
 from model import AlexnetCam
 
 def train_model(
@@ -13,7 +14,9 @@ def train_model(
         batch_size: int,
         checkpoints_dir: str,
         download_datasets: bool,
-        root_datasets_dir: str
+        root_datasets_dir: str,
+        car_type: str = None,
+        car_brand: str = None
     ):
     '''
     trains AlexnetCam model and saves its checkpoints to location
@@ -35,16 +38,19 @@ def train_model(
         or where dataset is already stored
     '''
 
-    model = AlexnetCam()
-    model = model.to(device)
-    optimizer = Adam(model.parameters(), lr=1e-5)
-
     # datasets and dataloaders
-    trainset = datasets.StanfordCars(f'{root_datasets_dir}/train/', split="train", download=download_datasets, transform=transform_predict)
+    trainset = StanfordCarsCAM(f'{root_datasets_dir}/train/', split="train", download_datasets=download_datasets, 
+        transform_prediction=transform_predict, car_type=car_type, car_brand=car_brand)
     train_loader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
 
-    testset = datasets.StanfordCars(f'{root_datasets_dir}/test/', split="test", download=download_datasets, transform=transform_predict)
+    testset = StanfordCarsCAM(f'{root_datasets_dir}/test/', split="test", download_datasets=download_datasets, 
+        transform_prediction=transform_predict, car_type=car_type, car_brand=car_brand)
     test_loader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=False)
+
+    # model
+    model = AlexnetCam(len(trainset.classes))
+    model = model.to(device)
+    optimizer = Adam(model.parameters(), lr=1e-5)
 
     # number of observations
     len_train_dataset = len(trainset)
