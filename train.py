@@ -36,6 +36,10 @@ def train_model(
     root_datasets_dir: str
         path to directory where dataset should be downloaded (download_datasets = True)
         or where dataset is already stored
+    car_type: str = None
+        limit records by given car_type
+    car_brand: str = None
+        limit records by given car_brand
     '''
 
     # datasets and dataloaders

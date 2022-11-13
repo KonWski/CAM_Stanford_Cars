@@ -11,6 +11,8 @@ def get_args():
     parser.add_argument('--checkpoints_dir', type=str, help='Path to directory where checkpoint will be saved')
     parser.add_argument('--download_datasets', type=str, help='Download dataset from Torchvision repo or use already existing dataset')
     parser.add_argument('--root_datasets_dir', type=str, help='Path where dataset should be downloaded or where is it already stored')
+    parser.add_argument('--car_type', type=str, help='Limit records by given car_type')
+    parser.add_argument('--car_brand', type=str, help='Limit records by given car_brand')
  
     args = vars(parser.parse_args())
     
@@ -43,4 +45,5 @@ if __name__ == "__main__":
     logging.info(f"Device: {device}")
 
     model = train_model(device, args["n_epochs"], args["batch_size"], args["checkpoints_dir"], 
-                        args["download_datasets"], args["root_datasets_dir"])
+                        args["download_datasets"], args["root_datasets_dir"], args["car_type"],
+                        args["car_brand"])
