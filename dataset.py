@@ -126,15 +126,15 @@ class StanfordCarsCAM(StanfordCars):
 
         # filter specification by car_brand
         if self.car_brand:
-            specification = specification[specification["car_brand"] == self.car_brand]
+            specification = specification[specification["car_brand"].isin(self.car_brand.split())]
         
         # filter specification by car_type
         if self.car_type:
-            specification = specification[specification["car_type"] == self.car_type]
+            specification = specification[specification["car_type"].isin(self.car_type.split())]
 
         # filter specification by car_production_year
         if self.car_type:
-            specification = specification[specification["car_production_year"] == self.car_production_year]
+            specification = specification[specification["car_production_year"].isin(self.car_production_year.split())]
 
         # adjust ids for model
         specification["new_idx"] = range(len(specification))

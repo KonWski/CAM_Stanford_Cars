@@ -3,8 +3,7 @@ from torch.optim import Adam
 import torch
 from torch import nn
 from torch.nn.functional import softmax
-from torchvision import datasets, models
-from transforms import transform_predict
+from transforms import transform_predict, transform_test
 from dataset import StanfordCarsCAM
 from model import AlexnetCam
 
@@ -51,7 +50,7 @@ def train_model(
     train_loader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
 
     testset = StanfordCarsCAM(f'{root_datasets_dir}/test/', split="test", download_datasets=download_datasets, 
-        transform_prediction=transform_predict, car_type=car_type, car_brand=car_brand, car_production_year=car_production_year)
+        transform_prediction=transform_test, car_type=car_type, car_brand=car_brand, car_production_year=car_production_year)
     test_loader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=False)
 
     # model
