@@ -74,7 +74,7 @@ class StanfordCarsCAM(StanfordCars):
     def _filter_samples(self):
 
         updated_samples_list = []
-        old_idxs = set(self.specification["old_idxs"].to_list())
+        old_idxs = set(self.classes_specification["old_idxs"].to_list())
         old_to_new_idxs = {idx: car_class for idx, car_class in 
                                 zip(self.classes_specification["old_idx"].to_list(), 
                                     self.classes_specification["new_idx"].to_list())}
