@@ -120,9 +120,9 @@ class StanfordCarsCAM(StanfordCars):
                 "car_class": car_classes,
                 "old_idx": old_idxs,
                 "car_brand": car_brands,
-                "car_year": car_production_years,
-                "car_type": car_types}
-                )
+                "car_type": car_types,
+                "car_production_year": car_production_years
+                })
 
         # filter specification by car_brand
         if self.car_brand:
