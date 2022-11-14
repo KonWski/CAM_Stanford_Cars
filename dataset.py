@@ -107,7 +107,7 @@ class StanfordCarsCAM(StanfordCars):
         car_years = []
 
         for car_class in self.class_to_idx.keys():
-    
+            print(f"car_class: {car_class}")
             car_classes.append(car_class)
             old_idxs.append(self.class_to_idx[car_class])
             class_record = car_class.split(" ")
@@ -122,7 +122,8 @@ class StanfordCarsCAM(StanfordCars):
                 "car_year": car_years,
                 "car_type": car_types}
                 )
-        
+        print("------------")
+        print(specification)
         # filter specification by car_brand
         if self.car_brand:
             specification = specification[specification["car_brand"] == self.car_brand]
