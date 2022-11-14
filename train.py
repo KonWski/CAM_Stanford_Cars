@@ -105,7 +105,6 @@ def train_model(
 
                 # statistics
                 running_loss += loss.item()
-                print(f"running_loss: {running_loss}")
                 running_corrects += (torch.argmax(proba, dim=1) == labels).sum().item()
 
             # save and log epoch statistics
