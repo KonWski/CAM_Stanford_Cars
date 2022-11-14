@@ -100,6 +100,8 @@ def train_model(
 
                 # statistics
                 running_loss += loss.item()
+                print(f"torch.argmax(preds, dim=1): {torch.argmax(preds, dim=1)}")
+                print(f"labels: {labels}")
                 running_corrects += (torch.argmax(preds, dim=1) == labels).sum().item()
 
             # save and log epoch statistics
@@ -115,7 +117,7 @@ def train_model(
                       "optimizer_state_dict": optimizer.state_dict()}
 
         checkpoint_path = f"{checkpoints_dir}/AlexnetCam_{epoch}"
-        save_checkpoint(checkpoint, checkpoint_path)
+        # save_checkpoint(checkpoint, checkpoint_path)
 
     return model
 
