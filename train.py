@@ -100,7 +100,7 @@ def train_model(
 
                 # statistics
                 running_loss += loss.item()
-                print(f"torch.argmax(preds, dim=1): {torch.argmax(preds, dim=1).item()}")
+                print(f"torch.argmax(preds, dim=1): {torch.argmax(preds, dim=1)}")
                 print(f"labels: {labels}")
                 running_corrects += (torch.argmax(preds, dim=1) == labels).sum().item()
 
