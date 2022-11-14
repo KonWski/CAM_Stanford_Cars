@@ -72,8 +72,6 @@ def train_model(
 
         for state, loader, len_dataset in zip(["train", "test"], [train_loader, test_loader], [len_train_dataset, len_test_dataset]):
 
-            logging.info(f"Epoch {epoch}")
-                
             # calculated parameters
             running_loss = 0.0
             running_corrects = 0
@@ -107,6 +105,7 @@ def train_model(
 
                 # statistics
                 running_loss += loss.item()
+                print(f"running_loss: {running_loss}")
                 running_corrects += (torch.argmax(proba, dim=1) == labels).sum().item()
 
             # save and log epoch statistics
