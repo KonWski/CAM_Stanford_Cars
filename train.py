@@ -92,7 +92,9 @@ def train_model(
                     loss = criterion(outputs, labels)
 
                     proba = softmax(outputs)
+                    print(f"proba: {proba}")
                     preds = torch.round(proba)
+                    print(f"preds: {preds}")
 
                     if state == "train":
                         loss.backward()
