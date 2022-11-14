@@ -46,7 +46,7 @@ class StanfordCarsCAM(StanfordCars):
         self.transform_prediction = transform_prediction
         self.transform_visualization = transform_visualization
         self.classes_specification = self._classes_specification()
-        
+        print(self.classes_specification)
         # update inherited fields according to filter conditions
         self.classes = self.classes_specification["car_class"].to_list()
         self.class_to_idx = {idx: car_class for idx, car_class in 
