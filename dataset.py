@@ -40,7 +40,7 @@ class StanfordCarsCAM(StanfordCars):
         transform_visualization: Optional[Callable] = None     
     ) -> None:
         
-        super().__init__(root=root, split=split, download=download_dataset)
+        super().__init__(root=root, split=split, download=download_datasets)
         self.car_brand = car_brand
         self.car_type = car_type
         self.transform_prediction = transform_prediction
