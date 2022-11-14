@@ -53,9 +53,10 @@ def train_model(
         transform_prediction=transform_test, car_type=car_type, car_brand=car_brand, car_production_year=car_production_year)
     test_loader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=False)
 
+    logging.info(f"Number of classes: {len(trainset.classes)}")
+
     # model
     model = AlexnetCam(len(trainset.classes))
-    print(f"len(trainset.classes): {len(trainset.classes)}")
     model = model.to(device)
     optimizer = Adam(model.parameters(), lr=1e-5)
 
@@ -63,7 +64,11 @@ def train_model(
     len_train_dataset = len(trainset)
     len_test_dataset = len(testset)
 
+    best_test_loss = float("inf")
+
     for epoch in range(n_epochs):
+        
+        checkpoint = {}
 
         for state, loader, len_dataset in zip(["train", "test"], [train_loader, test_loader], [len_train_dataset, len_test_dataset]):
 
@@ -95,9 +100,6 @@ def train_model(
                     loss = criterion(outputs, labels)
 
                     proba = softmax(outputs)
-                    # print(f"proba: {proba}")
-                    # preds = torch.round(proba)
-                    # print(f"preds: {preds}")
 
                     if state == "train":
                         loss.backward()
@@ -105,24 +107,30 @@ def train_model(
 
                 # statistics
                 running_loss += loss.item()
-                # print(f"torch.argmax(proba, dim=1): {torch.argmax(proba, dim=1)}")
-                # print(f"labels: {labels}")
                 running_corrects += (torch.argmax(proba, dim=1) == labels).sum().item()
 
             # save and log epoch statistics
             epoch_loss = round(running_loss / len_dataset, 2)
             epoch_acc = round(running_corrects / len_dataset, 2)
-            logging.info(f"Epoch: {epoch}, loss: {epoch_loss}, accuracy: {epoch_acc}")
 
-        # save model to checkpoint
-        checkpoint = {"epoch": epoch, 
-                      "loss": epoch_loss, 
-                      "accuracy": epoch_acc, 
-                      "model_state_dict": model.state_dict(), 
-                      "optimizer_state_dict": optimizer.state_dict()}
+            # save stats for potential checkpoint
+            checkpoint[f"{state}_loss"] = epoch_loss
+            checkpoint[f"{state}_accuracy"] = epoch_acc
 
-        checkpoint_path = f"{checkpoints_dir}/AlexnetCam_{epoch}"
-        # save_checkpoint(checkpoint, checkpoint_path)
+            logging.info(f"Epoch: {epoch}, state: {state}, loss: {epoch_loss}, accuracy: {epoch_acc}")
+
+        if checkpoint["test_loss"] < best_test_loss:
+
+            # save model to checkpoint
+            checkpoint["epoch"] = epoch
+            checkpoint["car_type"] = car_type
+            checkpoint["car_brand"] = car_brand
+            checkpoint["car_production_year"] = car_production_year
+            checkpoint["model_state_dict"] = model.state_dict()
+            checkpoint["optimizer_state_dict"] = optimizer.state_dict()
+
+            checkpoint_path = f"{checkpoints_dir}/AlexnetCam"
+            save_checkpoint(checkpoint, checkpoint_path)
 
     return model
 
