@@ -53,6 +53,7 @@ def train_model(
 
     # model
     model = AlexnetCam(len(trainset.classes))
+    print(f"len(trainset.classes): {len(trainset.classes)}")
     model = model.to(device)
     optimizer = Adam(model.parameters(), lr=1e-5)
 
@@ -102,8 +103,8 @@ def train_model(
 
                 # statistics
                 running_loss += loss.item()
-                print(f"torch.argmax(proba, dim=1): {torch.argmax(proba, dim=1)}")
-                print(f"labels: {labels}")
+                # print(f"torch.argmax(proba, dim=1): {torch.argmax(proba, dim=1)}")
+                # print(f"labels: {labels}")
                 running_corrects += (torch.argmax(proba, dim=1) == labels).sum().item()
 
             # save and log epoch statistics
