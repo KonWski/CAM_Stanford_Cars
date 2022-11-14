@@ -23,11 +23,11 @@ class StanfordCarsCAM(StanfordCars):
     state: str
         train or test
     car_brand: str
-        examples: 
-        all -> takes all brands
-        bwm -> select only bmw
+        limits records by given car_brand
     car_type: str
-        for example coupe will select only coupe types of cars
+        limits records by given car_type
+    car_production_year: int
+        limits records by given car_production_year
     '''
     def __init__(
         self, 
@@ -35,6 +35,7 @@ class StanfordCarsCAM(StanfordCars):
         split: str, 
         car_brand: str = None, 
         car_type: str = None,
+        car_production_year: int = None,
         download_datasets: bool = False,
         transform_prediction: Optional[Callable] = None, 
         transform_visualization: Optional[Callable] = None     
@@ -43,6 +44,7 @@ class StanfordCarsCAM(StanfordCars):
         super().__init__(root=root, split=split, download=download_datasets)
         self.car_brand = car_brand
         self.car_type = car_type
+        self.car_production_year = car_production_year
         self.transform_prediction = transform_prediction
         self.transform_visualization = transform_visualization
         self.classes_specification = self._classes_specification()
@@ -103,7 +105,7 @@ class StanfordCarsCAM(StanfordCars):
         old_idxs = []
         car_brands = []
         car_types = []
-        car_years = []
+        car_production_years = []
 
         for car_class in self.class_to_idx.keys():
             
@@ -111,14 +113,14 @@ class StanfordCarsCAM(StanfordCars):
             old_idxs.append(self.class_to_idx[car_class])
             class_record = car_class.split(" ")
             car_brands.append(class_record[0] if class_record[0] != "Land" else "Land Rover")
-            car_years.append(class_record[-1])
+            car_production_years.append(int(class_record[-1]))
             car_types.append(class_record[-2])
 
             specification = pd.DataFrame({
                 "car_class": car_classes,
                 "old_idx": old_idxs,
                 "car_brand": car_brands,
-                "car_year": car_years,
+                "car_year": car_production_years,
                 "car_type": car_types}
                 )
 
@@ -129,6 +131,10 @@ class StanfordCarsCAM(StanfordCars):
         # filter specification by car_type
         if self.car_type:
             specification = specification[specification["car_type"] == self.car_type]
+
+        # filter specification by car_production_year
+        if self.car_type:
+            specification = specification[specification["car_production_year"] == self.car_production_year]
 
         # adjust ids for model
         specification["new_idx"] = range(len(specification))

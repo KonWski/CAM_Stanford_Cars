@@ -13,7 +13,8 @@ def get_args():
     parser.add_argument('--root_datasets_dir', type=str, help='Path where dataset should be downloaded or where is it already stored')
     parser.add_argument('--car_type', type=str, help='Limit records by given car_type')
     parser.add_argument('--car_brand', type=str, help='Limit records by given car_brand')
- 
+    parser.add_argument('--car_production_year', type=int, help='Limit records by given year of production') 
+
     args = vars(parser.parse_args())
     
     # parse str to boolean
@@ -46,4 +47,4 @@ if __name__ == "__main__":
 
     model = train_model(device, args["n_epochs"], args["batch_size"], args["checkpoints_dir"], 
                         args["download_datasets"], args["root_datasets_dir"], args["car_type"],
-                        args["car_brand"])
+                        args["car_brand"], args["car_production_year"])

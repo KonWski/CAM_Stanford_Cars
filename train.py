@@ -16,7 +16,8 @@ def train_model(
         download_datasets: bool,
         root_datasets_dir: str,
         car_type: str = None,
-        car_brand: str = None
+        car_brand: str = None,
+        car_production_year: int = None
     ):
     '''
     trains AlexnetCam model and saves its checkpoints to location
@@ -37,18 +38,20 @@ def train_model(
         path to directory where dataset should be downloaded (download_datasets = True)
         or where dataset is already stored
     car_type: str = None
-        limit records by given car_type
+        limits records by given car_type
     car_brand: str = None
-        limit records by given car_brand
+        limits records by given car_brand
+    car_production_year: int = None
+        limits records by given year of production
     '''
 
     # datasets and dataloaders
     trainset = StanfordCarsCAM(f'{root_datasets_dir}/train/', split="train", download_datasets=download_datasets, 
-        transform_prediction=transform_predict, car_type=car_type, car_brand=car_brand)
+        transform_prediction=transform_predict, car_type=car_type, car_brand=car_brand, car_production_year=car_production_year)
     train_loader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
 
     testset = StanfordCarsCAM(f'{root_datasets_dir}/test/', split="test", download_datasets=download_datasets, 
-        transform_prediction=transform_predict, car_type=car_type, car_brand=car_brand)
+        transform_prediction=transform_predict, car_type=car_type, car_brand=car_brand, car_production_year=car_production_year)
     test_loader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=False)
 
     # model
