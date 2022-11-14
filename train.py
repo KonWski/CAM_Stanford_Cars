@@ -92,9 +92,9 @@ def train_model(
                     loss = criterion(outputs, labels)
 
                     proba = softmax(outputs)
-                    print(f"proba: {proba}")
-                    preds = torch.round(proba)
-                    print(f"preds: {preds}")
+                    # print(f"proba: {proba}")
+                    # preds = torch.round(proba)
+                    # print(f"preds: {preds}")
 
                     if state == "train":
                         loss.backward()
@@ -102,9 +102,9 @@ def train_model(
 
                 # statistics
                 running_loss += loss.item()
-                print(f"torch.argmax(preds, dim=1): {torch.argmax(preds, dim=1)}")
-                print(f"labels: {labels}")
-                running_corrects += (torch.argmax(preds, dim=1) == labels).sum().item()
+                # print(f"torch.argmax(preds, dim=1): {torch.argmax(proba, dim=1)}")
+                # print(f"labels: {labels}")
+                running_corrects += (torch.argmax(proba, dim=1) == labels).sum().item()
 
             # save and log epoch statistics
             epoch_loss = round(running_loss / len_dataset, 2)
