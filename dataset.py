@@ -35,7 +35,7 @@ class StanfordCarsCAM(StanfordCars):
         split: str, 
         car_brand: str = None, 
         car_type: str = None,
-        download_dataset: bool = False,
+        download_datasets: bool = False,
         transform_prediction: Optional[Callable] = None, 
         transform_visualization: Optional[Callable] = None     
     ) -> None:
