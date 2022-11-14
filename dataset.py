@@ -46,14 +46,13 @@ class StanfordCarsCAM(StanfordCars):
         self.transform_prediction = transform_prediction
         self.transform_visualization = transform_visualization
         self.classes_specification = self._classes_specification()
-        print(self.classes_specification)
+
         # update inherited fields according to filter conditions
         self.classes = self.classes_specification["car_class"].to_list()
         self.class_to_idx = {idx: car_class for idx, car_class in 
                                 zip(self.classes_specification["new_idx"].to_list(), 
                                     self.classes_specification["car_class"].to_list())}
         self._samples = self._filter_samples()
-        print(f"len(_samples): {len(self._samples)}")
 
 
     def __getitem__(self, idx):
@@ -107,7 +106,7 @@ class StanfordCarsCAM(StanfordCars):
         car_years = []
 
         for car_class in self.class_to_idx.keys():
-            print(f"car_class: {car_class}")
+            
             car_classes.append(car_class)
             old_idxs.append(self.class_to_idx[car_class])
             class_record = car_class.split(" ")
@@ -122,8 +121,7 @@ class StanfordCarsCAM(StanfordCars):
                 "car_year": car_years,
                 "car_type": car_types}
                 )
-        print("------------")
-        print(specification)
+
         # filter specification by car_brand
         if self.car_brand:
             specification = specification[specification["car_brand"] == self.car_brand]

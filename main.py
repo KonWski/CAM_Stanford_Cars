@@ -25,7 +25,7 @@ def get_args():
         else:
             args[param] = False
 
-    # print input parameters
+    # log input parameters
     logging.info(8*"-")
     logging.info("PARAMETERS")
     logging.info(8*"-")
