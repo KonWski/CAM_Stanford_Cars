@@ -53,6 +53,7 @@ class StanfordCarsCAM(StanfordCars):
                                 zip(self.classes_specification["new_idx"].to_list(), 
                                     self.classes_specification["car_class"].to_list())}
         self._samples = self._filter_samples()
+        print(f"len(_samples): {len(self._samples)}")
 
 
     def __getitem__(self, idx):
