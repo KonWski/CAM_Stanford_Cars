@@ -2,9 +2,7 @@ from PIL import Image
 import torch.utils.data as data
 from transforms import tranform_visualize, transform_predict
 from torchvision.datasets import StanfordCars
-import scipy.io as sio
 import pandas as pd
-from typing import Callable, Optional
 from typing import Callable, Optional
 
 
@@ -37,8 +35,8 @@ class StanfordCarsCAM(StanfordCars):
         car_type: str = None,
         car_production_year: int = None,
         download_datasets: bool = False,
-        transform_prediction: Optional[Callable] = None, 
-        transform_visualization: Optional[Callable] = None     
+        transform_prediction = transform_predict, 
+        transform_visualization = tranform_visualize
     ) -> None:
         
         super().__init__(root=root, split=split, download=download_datasets)
