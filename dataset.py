@@ -1,10 +1,9 @@
 from PIL import Image
 import torch.utils.data as data
-from transforms import tranform_visualize, transform_predict
+from cars_transforms import transform_visualize, transform_predict
 from torchvision.datasets import StanfordCars
 import pandas as pd
-from typing import Callable, Optional
-
+from torchvision import transforms
 
 class StanfordCarsCAM(StanfordCars):
     '''
@@ -26,6 +25,7 @@ class StanfordCarsCAM(StanfordCars):
         limits records by given car_type
     car_production_year: int
         limits records by given car_production_year
+    
     '''
     def __init__(
         self, 
@@ -35,14 +35,16 @@ class StanfordCarsCAM(StanfordCars):
         car_type: str = None,
         car_production_year: int = None,
         download_datasets: bool = False,
-        transform_prediction = transform_predict, 
-        transform_visualization = tranform_visualize
+        generate_img_for_cam: bool = False,
+        transform_prediction: transforms.Compose = transform_predict, 
+        transform_visualization: transforms.Compose = transform_visualize,
     ) -> None:
         
         super().__init__(root=root, split=split, download=download_datasets)
         self.car_brand = car_brand
         self.car_type = car_type
         self.car_production_year = car_production_year
+        self.generate_img_for_cam = generate_img_for_cam
         self.transform_prediction = transform_prediction
         self.transform_visualization = transform_visualization
         self.classes_specification = self._classes_specification()
@@ -63,7 +65,7 @@ class StanfordCarsCAM(StanfordCars):
         image_predict = self.transform_prediction(image)
 
         # generate transformed image for cam purpose
-        if self.transform_visualization:
+        if self.generate_img_for_cam:
 
             image_visualize = self.transform_visualization(image)
             return image_predict, image_visualize, target
