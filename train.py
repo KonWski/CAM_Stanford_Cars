@@ -3,7 +3,7 @@ from torch.optim import Adam
 import torch
 from torch import nn
 from torch.nn.functional import softmax
-from transforms import transform_predict, transform_test
+from cars_transforms import transform_predict, transform_test
 from dataset import StanfordCarsCAM
 from model import AlexnetCam
 
@@ -87,7 +87,6 @@ def train_model(
 
                 with torch.set_grad_enabled(state == 'train'):
                     
-                    print(f"len(batch): {len(batch)}")
                     images, labels = batch
 
                     images = images.to(device)
@@ -134,6 +133,9 @@ def train_model(
             checkpoint_path = f"{checkpoints_dir}/AlexnetCam"
             save_checkpoint(checkpoint, checkpoint_path)
 
+        else:
+            logging.info(8*"-")
+            
     return model
 
 
