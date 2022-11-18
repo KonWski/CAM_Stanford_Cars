@@ -46,11 +46,11 @@ def train_model(
 
     # datasets and dataloaders
     trainset = StanfordCarsCAM(f'{root_datasets_dir}/train/', split="train", download_datasets=download_datasets, 
-        transform_prediction=transform_predict, car_type=car_type, car_brand=car_brand, car_production_year=car_production_year)
+        car_type=car_type, car_brand=car_brand, car_production_year=car_production_year)
     train_loader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
 
     testset = StanfordCarsCAM(f'{root_datasets_dir}/test/', split="test", download_datasets=download_datasets, 
-        transform_prediction=transform_test, car_type=car_type, car_brand=car_brand, car_production_year=car_production_year)
+        car_type=car_type, car_brand=car_brand, car_production_year=car_production_year)
     test_loader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=False)
 
     logging.info(f"Number of classes: {len(trainset.classes)}")
@@ -84,6 +84,10 @@ def train_model(
                 model.eval()
 
             for id, batch in enumerate(loader, 0):
+                
+                print(f"type(batch): {type(batch)}")
+                print(f"batch: {batch}")
+
 
                 with torch.set_grad_enabled(state == 'train'):
                     
