@@ -84,13 +84,10 @@ def train_model(
                 model.eval()
 
             for id, batch in enumerate(loader, 0):
-                
-                print(f"type(batch): {type(batch)}")
-                print(f"batch: {batch}")
-
 
                 with torch.set_grad_enabled(state == 'train'):
                     
+                    print(f"len(batch): {len(batch)}")
                     images, labels = batch
 
                     images = images.to(device)
