@@ -3,6 +3,7 @@ import torch
 from torch import nn
 from torch.nn.functional import softmax
 from torch import Tensor
+import logging
 
 class AlexnetCam(nn.Module):
     '''
@@ -94,3 +95,61 @@ class AlexnetCam(nn.Module):
         cam = torch.nn.functional.interpolate(cam, (256, 256), mode='bilinear')
 
         return cam
+
+
+def save_checkpoint(checkpoint: dict, checkpoint_path: str):
+    '''
+    saves checkpoint on given checkpoint_path
+    '''
+    torch.save(checkpoint, checkpoint_path)
+
+    logging.info(8*"-")
+    logging.info(f"Saved model to checkpoint: {checkpoint_path}")
+    logging.info(f"Epoch: {checkpoint['epoch']}")
+    logging.info(8*"-")
+
+
+def load_checkpoint(checkpoint_path: str):
+    '''
+    loads model checkpoint from given path
+
+    Parameters
+    ----------
+    checkpoint_path : str
+        Path to checkpoint
+
+    Notes
+    -----
+    checkpoint: dict
+                parameters retrieved from training process i.e.:
+                - model_state_dict
+                - last finished number of epoch
+                - loss from last epoch training
+                - accuracy from last epoch training
+                - loss from last epoch testing
+                - accuracy from last epoch testing
+                - save time
+    '''
+    checkpoint = torch.load(checkpoint_path)
+    n_classes = checkpoint["n_classes"]
+
+    # initiate model
+    model = AlexnetCam(n_classes)
+
+    # load parameters from checkpoint
+    model.load_state_dict(checkpoint["model_state_dict"])
+
+    # print loaded parameters
+    logging.info(f"Loaded model from checkpoint: {checkpoint_path}")
+    logging.info(f"Epoch: {checkpoint['epoch']}")
+    logging.info(f"Test loss: {checkpoint['epoch_loss']}")
+    logging.info(f"Test accuracy: {checkpoint['epoch_acc']}")
+    logging.info(f"Car type: {checkpoint['car_type']}")
+    logging.info(f"Car brand: {checkpoint['car_brand']}")
+    logging.info(f"Car production year: {checkpoint['car_production_year']}")
+    logging.info(f"Number of classes: {checkpoint['n_classes']}")
+    logging.info(f"Save dttm: {checkpoint['save_dttm']}")
+
+    logging.info(8*"-")
+
+    return model, checkpoint

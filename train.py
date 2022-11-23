@@ -3,9 +3,9 @@ from torch.optim import Adam
 import torch
 from torch import nn
 from torch.nn.functional import softmax
-from cars_transforms import transform_predict, transform_test
 from dataset import StanfordCarsCAM
-from model import AlexnetCam
+from model import AlexnetCam, save_checkpoint
+from datetime import datetime
 
 def train_model(
         device, 
@@ -53,10 +53,11 @@ def train_model(
         car_type=car_type, car_brand=car_brand, car_production_year=car_production_year)
     test_loader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=False)
 
-    logging.info(f"Number of classes: {len(trainset.classes)}")
+    n_classes = len(trainset.classes)
+    logging.info(f"Number of classes: {n_classes}")
 
     # model
-    model = AlexnetCam(len(trainset.classes))
+    model = AlexnetCam(n_classes)
     model = model.to(device)
     optimizer = Adam(model.parameters(), lr=1e-5)
 
@@ -127,8 +128,9 @@ def train_model(
             checkpoint["car_type"] = car_type
             checkpoint["car_brand"] = car_brand
             checkpoint["car_production_year"] = car_production_year
+            checkpoint["n_classes"] = n_classes
             checkpoint["model_state_dict"] = model.state_dict()
-            checkpoint["optimizer_state_dict"] = optimizer.state_dict()
+            checkpoint["save_dttm"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
             checkpoint_path = f"{checkpoints_dir}/AlexnetCam"
             save_checkpoint(checkpoint, checkpoint_path)
@@ -137,13 +139,3 @@ def train_model(
             logging.info(8*"-")
             
     return model
-
-
-def save_checkpoint(checkpoint: dict, checkpoint_path: str):
-
-    torch.save(checkpoint, checkpoint_path)
-
-    logging.info(8*"-")
-    logging.info(f"Saved model to checkpoint: {checkpoint_path}")
-    logging.info(f"Epoch: {checkpoint['epoch']}")
-    logging.info(8*"-")
