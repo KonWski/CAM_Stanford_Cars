@@ -124,14 +124,17 @@ def load_checkpoint(checkpoint_path: str):
                 parameters retrieved from training process i.e.:
                 - model_state_dict
                 - last finished number of epoch
-                - loss from last epoch training
-                - accuracy from last epoch training
+                - save time
+                - params for Stanford Cars dataset 
+                    + car type
+                    + car brand
+                    + car production year
+                - number of classes
                 - loss from last epoch testing
                 - accuracy from last epoch testing
-                - save time
+                
     '''
     checkpoint = torch.load(checkpoint_path)
-    print(checkpoint)
     n_classes = checkpoint["n_classes"]
 
     # initiate model
@@ -143,13 +146,13 @@ def load_checkpoint(checkpoint_path: str):
     # print loaded parameters
     logging.info(f"Loaded model from checkpoint: {checkpoint_path}")
     logging.info(f"Epoch: {checkpoint['epoch']}")
-    logging.info(f"Test loss: {checkpoint['test_loss']}")
-    logging.info(f"Test accuracy: {checkpoint['test_acc']}")
+    logging.info(f"Save dttm: {checkpoint['save_dttm']}")
     logging.info(f"Car type: {checkpoint['car_type']}")
     logging.info(f"Car brand: {checkpoint['car_brand']}")
     logging.info(f"Car production year: {checkpoint['car_production_year']}")
     logging.info(f"Number of classes: {checkpoint['n_classes']}")
-    logging.info(f"Save dttm: {checkpoint['save_dttm']}")
+    logging.info(f"Test loss: {checkpoint['test_loss']}")
+    logging.info(f"Test accuracy: {checkpoint['test_accuracy']}")
 
     logging.info(8*"-")
 
