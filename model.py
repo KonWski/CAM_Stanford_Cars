@@ -131,6 +131,7 @@ def load_checkpoint(checkpoint_path: str):
                 - save time
     '''
     checkpoint = torch.load(checkpoint_path)
+    print(checkpoint)
     n_classes = checkpoint["n_classes"]
 
     # initiate model
