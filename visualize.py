@@ -53,7 +53,7 @@ def visualize_cam(image: torch.Tensor, blended_image: np.ndarray):
         original image blended with heatmap
     '''
     fig, ax = plt.subplots(nrows = 1, ncols = 2)
-    image = image.permute(1, 2, 0).detach().numpy()
+    image = image.permute(1, 2, 0)
 
     ax[0].imshow(image)
     ax[1].imshow(blended_image[:, :, 0], cmap="jet")
