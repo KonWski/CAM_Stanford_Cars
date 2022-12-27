@@ -41,24 +41,48 @@ def apply_cam(images: torch.Tensor, cam: torch.Tensor):
     return blended_images
 
 
-def visualize_cam(image: torch.Tensor, blended_image: np.ndarray):
+# def visualize_cam(image: torch.Tensor, blended_image: np.ndarray):
+#     '''
+#     shows pair of images - before and after applying cam
+    
+#     Parameters
+#     ----------
+#     image: torch.Tensor
+#         single image before applying cam
+#     blended_image: np.ndarray
+#         original image blended with heatmap
+#     '''
+#     blended_image = blended_image[0]
+#     image = image[0].permute(1, 2, 0)
+
+#     fig, ax = plt.subplots(nrows = 1, ncols = 2)
+
+#     ax[0].imshow(image)
+#     ax[0].axis("off")
+    
+#     ax[1].imshow(blended_image[:, :, 0], cmap="jet")
+#     ax[1].axis("off")
+
+
+def visualize_cam(images: torch.Tensor, blended_images: np.ndarray):
     '''
     shows pair of images - before and after applying cam
     
     Parameters
     ----------
-    image: torch.Tensor
-        single image before applying cam
-    blended_image: np.ndarray
-        original image blended with heatmap
+    images: torch.Tensor
+        batch of images before applying cam
+    blended_images: np.ndarray
+        batch of original images blended with heatmaps
     '''
-    blended_image = blended_image[0]
-    image = image[0].permute(1, 2, 0)
 
-    fig, ax = plt.subplots(nrows = 1, ncols = 2)
+    batch_size = images.shape[0]
+    fig, ax = plt.subplots(nrows = batch_size, ncols = 2)
 
-    ax[0].imshow(image)
-    ax[0].axis("off")
-    
-    ax[1].imshow(blended_image[:, :, 0], cmap="jet")
-    ax[1].axis("off")
+    for n_image in range(batch_size):
+        
+        ax[n_image, 0].imshow(images[n_image])
+        ax[n_image, 0].axis("off")
+
+        ax[n_image, 1].imshow(blended_images[n_image], cmap="jet")
+        ax[n_image, 1].axis("off")
