@@ -77,12 +77,16 @@ def visualize_cam(images: torch.Tensor, blended_images: np.ndarray):
     '''
 
     batch_size = images.shape[0]
-    fig, ax = plt.subplots(nrows = batch_size, ncols = 2)
 
     for n_image in range(batch_size):
-        
-        ax[n_image, 0].imshow(images[n_image])
-        ax[n_image, 0].axis("off")
 
-        ax[n_image, 1].imshow(blended_images[n_image], cmap="jet")
-        ax[n_image, 1].axis("off")
+        fig, ax = plt.subplots(nrows = 1, ncols = 2)
+        ax[0].imshow(images[n_image])
+        ax[0].axis("off")
+        
+        ax[1].imshow(blended_images[n_image:, :, :, 0], cmap="jet")
+        ax[1].axis("off")
+
+        # reset plt
+        plt.cla()
+        plt.clf()
