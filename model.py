@@ -70,6 +70,8 @@ class AlexnetCam(nn.Module):
         batch_size = features.shape[0]
 
         predicted_class = torch.argmax(output)
+        print(f"predicted_class.shape: {predicted_class.shape}")
+        print(f"self.classifier.weight.shape: {self.classifier.weight.shape}")
 
         weights = self.classifier.weight[predicted_class]
         weights = weights.reshape(256, 1)
