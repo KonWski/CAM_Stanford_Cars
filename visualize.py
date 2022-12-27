@@ -56,7 +56,9 @@ def visualize_cam(image: torch.Tensor, blended_image: np.ndarray):
     image = image[0].permute(1, 2, 0)
 
     fig, ax = plt.subplots(nrows = 1, ncols = 2)
-    ax.axis("off")
 
     ax[0].imshow(image)
+    ax[0].axis("off")
+    
     ax[1].imshow(blended_image[:, :, 0], cmap="jet")
+    ax[1].axis("off")
