@@ -81,7 +81,7 @@ def visualize_cam(images: torch.Tensor, blended_images: np.ndarray):
     for n_image in range(batch_size):
 
         blended_image = blended_image[n_image]
-        image = image[n_image].permute(1, 2, 0)
+        image = images[n_image].permute(1, 2, 0)
 
         fig, ax = plt.subplots(nrows = 1, ncols = 2)
         ax[0].imshow(image)
