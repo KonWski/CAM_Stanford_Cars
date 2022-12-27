@@ -77,8 +77,10 @@ def visualize_cam(images: torch.Tensor, blended_images: np.ndarray):
     '''
 
     batch_size = images.shape[0]
+    print(f"batch_size: {batch_size}")
 
     for n_image in range(batch_size):
+        print(f"n_image: {n_image}")
 
         blended_image = blended_images[n_image]
         image = images[n_image].permute(1, 2, 0)
