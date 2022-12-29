@@ -81,7 +81,9 @@ class AlexnetCam(nn.Module):
             # weights = weights.repeat(batch_size, 1, 1)
 
             # features = features.reshape(batch_size, 256, 49)
+
             features_image = features[img_iter]
+            features = features.reshape(256, 49)
             print(f"features_image shape: {features_image.shape}")
 
             # sum of conv layers multiplied by weights
@@ -91,7 +93,7 @@ class AlexnetCam(nn.Module):
             # cam = cam.reshape(batch_size, 256, 7, 7)
 
             # sum all elements across channel per batch element
-            cam = cam.sum(1)
+            cam = cam.sum(0)
 
             # normalize to 0-1
             max = torch.max(cam)
