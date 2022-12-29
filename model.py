@@ -68,20 +68,9 @@ class AlexnetCam(nn.Module):
             tensor representing scores of output neurons
         '''
         batch_size = features.shape[0]
-        print(f"output shape: {output.shape}")
-        print(f"features shape: {features.shape}")
         predicted_classes = torch.argmax(output)
-        print(f"self.classifier.weight.shape: {self.classifier.weight.shape}")
-
-        '''
-        TODO: multiply features by weights according to predicted class
-        returncam -> https://debuggercafe.com/basic-introduction-to-class-activation-maps-in-deep-learning-using-pytorch/
-        loop over batch
-        '''
 
         for predicted_class in predicted_classes.tolist():
-            
-            print(f"predicted_class: {predicted_class}")
 
             weights = self.classifier.weight[predicted_class]
             weights = weights.reshape(256, 1)
