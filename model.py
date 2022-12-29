@@ -68,33 +68,43 @@ class AlexnetCam(nn.Module):
             tensor representing scores of output neurons
         '''
         batch_size = features.shape[0]
-
-        predicted_class = torch.argmax(output)
-        print(f"predicted_class.shape: {predicted_class.shape}")
+        print(f"output shape: {output.shape}")
+        print(f"features shape: {features.shape}")
+        predicted_classes = torch.argmax(output)
         print(f"self.classifier.weight.shape: {self.classifier.weight.shape}")
 
-        weights = self.classifier.weight[predicted_class]
-        weights = weights.reshape(256, 1)
-        weights = weights.repeat(batch_size, 1, 1)
+        '''
+        TODO: multiply features by weights according to predicted class
+        returncam -> https://debuggercafe.com/basic-introduction-to-class-activation-maps-in-deep-learning-using-pytorch/
+        loop over batch
+        '''
 
-        features = features.reshape(batch_size, 256, 49)
+        for predicted_class in predicted_classes.tolist():
+            
+            print(f"predicted_class: {predicted_class}")
 
-        # sum of conv layers multiplied by weights
-        weights_softmax = softmax(weights)
-        cam = features.mul(weights_softmax)
-        cam = cam.reshape(batch_size, 256, 7, 7)
-        
-        # sum all elements across channel per batch element
-        cam = cam.sum(1)
+            weights = self.classifier.weight[predicted_class]
+            weights = weights.reshape(256, 1)
+            weights = weights.repeat(batch_size, 1, 1)
 
-        # normalize to 0-1
-        max = torch.max(cam)
-        min = torch.min(cam)
-        cam = (cam - min) / (max - min)
+            features = features.reshape(batch_size, 256, 49)
 
-        # reshape to the original size
-        cam = cam.reshape(batch_size, 1, 7, 7)
-        cam = torch.nn.functional.interpolate(cam, (256, 256), mode='bilinear')
+            # sum of conv layers multiplied by weights
+            weights_softmax = softmax(weights)
+            cam = features.mul(weights_softmax)
+            cam = cam.reshape(batch_size, 256, 7, 7)
+            
+            # sum all elements across channel per batch element
+            cam = cam.sum(1)
+
+            # normalize to 0-1
+            max = torch.max(cam)
+            min = torch.min(cam)
+            cam = (cam - min) / (max - min)
+
+            # reshape to the original size
+            cam = cam.reshape(batch_size, 1, 7, 7)
+            cam = torch.nn.functional.interpolate(cam, (256, 256), mode='bilinear')
 
         return cam
 
