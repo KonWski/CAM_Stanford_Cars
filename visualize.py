@@ -4,6 +4,7 @@ import torchvision.transforms.functional as TF
 from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
+from typing import List
 
 def apply_cam(images: torch.Tensor, cam: torch.Tensor):
     '''
@@ -41,7 +42,7 @@ def apply_cam(images: torch.Tensor, cam: torch.Tensor):
     return blended_images
 
 
-def visualize_cam(images: torch.Tensor, blended_images: np.ndarray):
+def visualize_cam(images: torch.Tensor, blended_images: np.ndarray, labels: List[str]):
     '''
     shows pair of images - before and after applying cam
     
@@ -59,8 +60,11 @@ def visualize_cam(images: torch.Tensor, blended_images: np.ndarray):
 
         blended_image = blended_images[n_image]
         image = images[n_image].permute(1, 2, 0)
+        label = labels[n_image]
 
         fig, ax = plt.subplots(nrows = 1, ncols = 2)
+        fig.suptitle(f"Predicted class: {label}")
+
         ax[0].imshow(image)
         ax[0].axis("off")
         
