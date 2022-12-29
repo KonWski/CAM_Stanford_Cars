@@ -68,9 +68,12 @@ class AlexnetCam(nn.Module):
             tensor representing scores of output neurons
         '''
         batch_size = features.shape[0]
+        print(f"output: {output}")
         predicted_classes = torch.argmax(output)
 
         for predicted_class in predicted_classes.tolist():
+            
+            print(f"predicted class: {predicted_class}")
 
             weights = self.classifier.weight[predicted_class]
             weights = weights.reshape(256, 1)
