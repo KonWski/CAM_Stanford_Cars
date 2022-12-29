@@ -67,30 +67,22 @@ class AlexnetCam(nn.Module):
         output: Tensor
             tensor representing scores of output neurons
         '''
-        batch_size = features.shape[0]
         predicted_classes = torch.argmax(output, 1)
         cams = []
 
-        print(f"features.shape: {features.shape}")
-
-        for img_iter, predicted_class in enumerate(predicted_classes.tolist()):
-
+        for n_image, predicted_class in enumerate(predicted_classes.tolist()):
+            
+            # select weights for predicted class
             weights = self.classifier.weight[predicted_class]
             weights = weights.reshape(256, 1)
-            print(f"weights shape: {weights.shape}")
-            # weights = weights.repeat(batch_size, 1, 1)
 
-            # features = features.reshape(batch_size, 256, 49)
-
-            features_image = features[img_iter]
+            # select features from batch
+            features_image = features[n_image]
             features_image = features_image.reshape(256, 49)
-            print(f"features_image shape: {features_image.shape}")
 
             # sum of conv layers multiplied by weights
             weights_softmax = softmax(weights)
             cam = features_image.mul(weights_softmax)
-            print(f"cam.shape: {cam.shape}")
-            # cam = cam.reshape(batch_size, 256, 7, 7)
 
             # sum all elements across channel per batch element
             cam = cam.sum(0)
@@ -101,11 +93,15 @@ class AlexnetCam(nn.Module):
             cam = (cam - min) / (max - min)
 
             # reshape to the original size
-            # cam = cam.reshape(batch_size, 1, 7, 7)
             cam = cam.reshape(1, 1, 7, 7)
             cam = torch.nn.functional.interpolate(cam, (256, 256), mode='bilinear')
 
-        return cam
+            cams.append(cam)
+
+        # convert list into batch of cams
+        cams = torch.concat(cams)
+
+        return cams
 
 
 def save_checkpoint(checkpoint: dict, checkpoint_path: str):
