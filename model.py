@@ -69,7 +69,7 @@ class AlexnetCam(nn.Module):
         '''
         batch_size = features.shape[0]
         print(f"output: {output}")
-        predicted_classes = torch.argmax(output)
+        predicted_classes = torch.argmax(output, 1)
 
         for predicted_class in predicted_classes.tolist():
             
