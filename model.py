@@ -77,17 +77,18 @@ class AlexnetCam(nn.Module):
 
             weights = self.classifier.weight[predicted_class]
             weights = weights.reshape(256, 1)
+            print(f"weights shape: {weights.shape}")
             # weights = weights.repeat(batch_size, 1, 1)
-            weights = weights.repeat(1, 1, 1)
 
             # features = features.reshape(batch_size, 256, 49)
             features_image = features[img_iter]
+            print(f"features_image shape: {features_image.shape}")
 
             # sum of conv layers multiplied by weights
             weights_softmax = softmax(weights)
             cam = features_image.mul(weights_softmax)
+            print(f"cam.shape: {cam.shape}")
             # cam = cam.reshape(batch_size, 256, 7, 7)
-            cam.reshape(1, 256, 7, 7)
 
             # sum all elements across channel per batch element
             cam = cam.sum(1)
@@ -99,7 +100,6 @@ class AlexnetCam(nn.Module):
 
             # reshape to the original size
             # cam = cam.reshape(batch_size, 1, 7, 7)
-            cam = cam.reshape(1, 1, 7, 7)
             cam = torch.nn.functional.interpolate(cam, (256, 256), mode='bilinear')
 
         return cam
