@@ -102,6 +102,7 @@ class AlexnetCam(nn.Module):
 
             # reshape to the original size
             # cam = cam.reshape(batch_size, 1, 7, 7)
+            cam = cam.reshape(1, 7, 7)
             cam = torch.nn.functional.interpolate(cam, (256, 256), mode='bilinear')
 
         return cam
