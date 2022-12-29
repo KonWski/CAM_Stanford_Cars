@@ -83,7 +83,7 @@ class AlexnetCam(nn.Module):
             # features = features.reshape(batch_size, 256, 49)
 
             features_image = features[img_iter]
-            features = features.reshape(256, 49)
+            features_image = features_image.reshape(256, 49)
             print(f"features_image shape: {features_image.shape}")
 
             # sum of conv layers multiplied by weights
