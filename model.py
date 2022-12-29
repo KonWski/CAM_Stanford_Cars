@@ -78,6 +78,7 @@ class AlexnetCam(nn.Module):
             weights = self.classifier.weight[predicted_class]
             weights = weights.reshape(256, 1)
             # weights = weights.repeat(batch_size, 1, 1)
+            weights = weights.repeat(1, 1, 1)
 
             # features = features.reshape(batch_size, 256, 49)
             features_image = features[img_iter]
