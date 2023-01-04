@@ -69,4 +69,4 @@ def visualize_cam(images: torch.Tensor, blended_images: np.ndarray, labels: List
         
         ax[1].imshow(blended_image[:, :, 0], cmap="jet")
         ax[1].axis("off")
-        fig.suptitle(f"Predicted class: {label}", y=0.85, horizontalalignment="left")
+        fig.suptitle(f"Predicted class: {label}", y=0.85, horizontalalignment="right")
