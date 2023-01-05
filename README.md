@@ -4,7 +4,7 @@ This repository is an implementation of AlexNet generating Class Activation Maps
 # CAM
 Class activation mapping is a special procedure mounted on top of traditional convolutional neural network which outputs a heatmap showing which pixels of image were significant during prediction. It was primarly introduced in [Learning Deep Features for Discriminative Localization](https://arxiv.org/abs/1512.04150) paper by Zhou et al.
 
-| ![cam_structure](/images/cam_structure.PNG) |
+| ![cam_structure](/images/cam_structure.png) |
 |:--:|
 | Class Activation Mapping[1]|
 
@@ -93,4 +93,4 @@ for id, batch in enumerate(cars_dataloader):
 ```
 Output:
 
-![cam_examples](/images/cam_example.PNG)
+![cam_example](/images/cam_example.png)
